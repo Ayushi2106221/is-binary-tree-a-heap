@@ -1,0 +1,68 @@
+class Solution {
+  public:
+  
+    //to check weather the tree is complete binary tree or not
+    bool isCBT(struct Node *root, int index, int total_nodes){
+        //base case
+        if(root==NULL){
+            return true;
+        }
+        if(index>=total_nodes){
+            return false;
+        }
+        else{
+            //check for left and right subtree
+            bool left=isCBT(root->left,2*index+1,total_nodes);
+            bool right=isCBT(root->right,2*index+2,total_nodes);
+            return left && right;
+        }
+    }
+    
+    
+    //to check the tree is maxheap or not
+    bool ismaxheap(struct Node *root){
+        //base case
+        //leaf nodes are always max heap
+        if(root->left==NULL && root->right==NULL)
+        return true;
+        
+        //case 2 only one child is there
+        //this child will always be left child as it is a complete tree
+        if(root->right==NULL){
+            return root->data>=root->left->data;
+        }
+        //case 3 two childs
+        else{
+            bool left=ismaxheap(root->left);
+            bool right=ismaxheap(root->right);
+            //for max heap condition is
+            if(left && right && root->data>=root->left->data && root->data>=root->right->data){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+    }
+    
+    //to count number of nodes in a tree
+    int countNodes(struct Node *root){
+        if(root==NULL){
+            return 0;
+        }
+        //we add one for root
+        int ans=1+countNodes(root->left)+countNodes(root->right);
+        return ans;
+    }
+    bool isHeap(struct Node* tree) {
+        // code here
+        int total_nodes=countNodes(tree);
+        int index=0;
+        if(isCBT(tree,index,total_nodes) && ismaxheap(tree)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+};
